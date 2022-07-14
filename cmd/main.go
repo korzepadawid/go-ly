@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/korzepadawid/go-ly/pkg/config"
 	"github.com/korzepadawid/go-ly/pkg/routes"
-	"github.com/korzepadawid/go-ly/pkg/util"
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 func main() {
 	log.Println("Starting server.")
 
-	util.InitRedis()
+	config.InitRedis()
 
 	router := routes.RegisterUrlsRoutes()
 
