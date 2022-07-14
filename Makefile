@@ -3,3 +3,6 @@ build:
 
 run:
 	./bin/main.out
+
+redis_dev:
+	docker run --name redis-go-dev -p 6379:6379 -d redis
