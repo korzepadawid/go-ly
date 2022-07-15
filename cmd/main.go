@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/korzepadawid/go-ly/pkg/config"
+	"github.com/korzepadawid/go-ly/pkg/model"
 	"github.com/korzepadawid/go-ly/pkg/routes"
 )
 
@@ -20,6 +21,7 @@ func main() {
 
 	config.InitRedis()
 	config.ConnectToDB()
+	model.InitURL()
 
 	router := routes.RegisterUrlsRoutes()
 
