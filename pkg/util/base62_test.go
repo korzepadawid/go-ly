@@ -11,6 +11,7 @@ type base62EncodeTest struct {
 }
 
 func TestBase62Encode(t *testing.T) {
+	base62 := Base62()
 	testCases := []base62EncodeTest{
 		{0, "0", "base62 format: [0-9][a-z][A-z]"},
 		{1, "1", "returns 1 not 0"},
@@ -20,9 +21,21 @@ func TestBase62Encode(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			if output := Base62().Encode(tC.arg); output != tC.expected {
+			if output, err := base62.Encode(tC.arg); output != tC.expected || err != nil {
 				t.Fatalf("Expected %s, got %s instead.", tC.expected, output)
 			}
 		})
 	}
+
+	t.Run("when you enter negative value you should get an error", func(t *testing.T) {
+		_, err := base62.Encode(-1)
+
+		if err == nil {
+			t.Fatal("Expected error")
+		}
+	})
+}
+
+func TestBase62Decode(t *testing.T) {
+
 }

@@ -1,6 +1,9 @@
 package util
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 const (
 	base         = 62
@@ -12,9 +15,11 @@ type base62 struct {
 	base         int64
 }
 
-func (b *base62) Encode(num int64) string {
+func (b *base62) Encode(num int64) (string, error) {
 	if num == 0 {
-		return "0"
+		return "0", nil
+	} else if num < 0 {
+		return "", fmt.Errorf("number: %d must be greater or equal to zero", num)
 	}
 
 	var result string
@@ -28,7 +33,7 @@ func (b *base62) Encode(num int64) string {
 		result = sb.String()
 	}
 
-	return result
+	return result, nil
 }
 
 func (b *base62) Decode(s string) (int64, error) {
