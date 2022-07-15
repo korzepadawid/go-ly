@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/korzepadawid/go-ly/pkg/config"
 	"github.com/korzepadawid/go-ly/pkg/dto"
 	"github.com/korzepadawid/go-ly/pkg/util"
@@ -40,10 +41,21 @@ func CreateNewShortUrl(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(body)
 	w.WriteHeader(http.StatusCreated)
+	w.Write(body)
 }
 
 func RedirectToShortUrl(w http.ResponseWriter, r *http.Request) {
 	log.Println("Redirecting to short url from ", r.RemoteAddr)
+
+	vars := mux.Vars(r)
+	redis := config.Redis
+
+	value := redis.Get(vars["base62"]).Val()
+
+	if len(value) > 0 {
+		http.Redirect(w, r, value, http.StatusPermanentRedirect)
+	}
+
+	w.WriteHeader(http.StatusNotFound)
 }
