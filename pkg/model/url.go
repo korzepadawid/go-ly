@@ -28,8 +28,8 @@ func (u *URL) SaveURL() *URL {
 	return u
 }
 
-func GetURLByID(ID int64) *URL {
+func GetURLByID(ID int64) (*URL, *gorm.DB) {
 	var url URL
-	db.Where("ID=?", ID).Find(&url)
-	return &url
+	db := db.Where("ID=?", ID).Find(&url)
+	return &url, db
 }

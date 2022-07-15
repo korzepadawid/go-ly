@@ -66,7 +66,12 @@ func RedirectToShortUrl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	url := model.GetURLByID(ID + 1)
+	url, tx := model.GetURLByID(ID + 1)
+
+	if tx.Error != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 
 	http.Redirect(w, r, url.Url, http.StatusPermanentRedirect)
 }
