@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/korzepadawid/go-ly/pkg/config"
 	"github.com/korzepadawid/go-ly/pkg/dto"
+	"github.com/korzepadawid/go-ly/pkg/model"
 	"github.com/korzepadawid/go-ly/pkg/util"
 )
 
@@ -55,7 +56,17 @@ func RedirectToShortUrl(w http.ResponseWriter, r *http.Request) {
 
 	if len(value) > 0 {
 		http.Redirect(w, r, value, http.StatusPermanentRedirect)
+		return
 	}
 
-	w.WriteHeader(http.StatusNotFound)
+	ID, err := util.Base62().Decode(value)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	url := model.GetURLByID(ID + 1)
+
+	http.Redirect(w, r, url.Url, http.StatusPermanentRedirect)
 }
