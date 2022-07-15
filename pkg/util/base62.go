@@ -2,12 +2,15 @@ package util
 
 import (
 	"fmt"
+	"math"
+	"regexp"
 	"strings"
 )
 
 const (
 	base         = 62
 	characterSet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	base62Regex  = "^[0-9A-Za-z]+$"
 )
 
 type base62 struct {
@@ -36,8 +39,30 @@ func (b *base62) Encode(num int64) (string, error) {
 	return result, nil
 }
 
-func (b *base62) Decode(s string) (int64, error) {
-	return int64(4), nil
+func (b *base62) Decode(str string) (int64, error) {
+	if !isValidBase62(str) {
+		return -1, fmt.Errorf("base62 doesn't match the pattern %s", base62Regex)
+	}
+
+	var result int64
+	var exp int
+
+	for i := len(str) - 1; i >= 0; i-- {
+		if idx := strings.IndexByte(b.characterSet, str[i]); idx >= 0 {
+			x := float64(b.base)
+			y := float64(exp)
+			temp := math.Pow(x, y)
+			result += (int64(idx) * int64(temp))
+			exp += 1
+		}
+	}
+
+	return result, nil
+}
+
+func isValidBase62(s string) bool {
+	match, _ := regexp.MatchString(base62Regex, s)
+	return match
 }
 
 func Base62() *base62 {
