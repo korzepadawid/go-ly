@@ -13,14 +13,22 @@ type base62 struct {
 }
 
 func (b *base62) Encode(num int64) string {
-	var sb strings.Builder
-	for num >= 0 {
-		idx := int(num % base)
-		char := string(b.characterSet[idx])
-		sb.WriteString(char)
-		num /= b.base
+	if num == 0 {
+		return "0"
 	}
-	return sb.String()
+
+	var result string
+
+	for num > 0 {
+		idx := int(num % b.base)
+		num /= b.base
+		sb := strings.Builder{}
+		sb.WriteString(string(characterSet[idx]))
+		sb.WriteString(result)
+		result = sb.String()
+	}
+
+	return result
 }
 
 func (b *base62) Decode(s string) (int64, error) {

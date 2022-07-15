@@ -1,7 +1,6 @@
 package util
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -21,8 +20,9 @@ func TestBase62Encode(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			base62 := Base62()
-			fmt.Println(base62.Encode(tC.arg))
+			if output := Base62().Encode(tC.arg); output != tC.expected {
+				t.Fatalf("Expected %s, got %s instead.", tC.expected, output)
+			}
 		})
 	}
 }
