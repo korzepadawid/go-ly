@@ -9,8 +9,8 @@ var db *gorm.DB
 
 type URL struct {
 	gorm.Model
-	Url        string
-	AuthorIPv4 string
+	Url        string `json:"url"`
+	AuthorIPv4 string `json:"ipv4"`
 }
 
 func InitURL() {
