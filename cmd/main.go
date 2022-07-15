@@ -19,6 +19,7 @@ func main() {
 	log.Println("Starting server.")
 
 	config.InitRedis()
+	config.ConnectToDB()
 
 	router := routes.RegisterUrlsRoutes()
 

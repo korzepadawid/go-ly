@@ -15,3 +15,11 @@ test:
 
 redis_dev:
 	docker run --name redis-go-dev -p 6379:6379 -d redis
+
+postgres_dev:
+	docker run -d \
+			-p5432:5432 \
+			-e POSTGRES_DB=db \
+			-e POSTGRES_USER=postgres \
+			-e POSTGRES_PASSWORD=postgres \
+			postgres:latest

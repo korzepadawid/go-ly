@@ -8,6 +8,6 @@ import (
 func RegisterUrlsRoutes() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/urls", controllers.CreateNewShortUrl).Methods("POST")
-	r.HandleFunc("/{short_url}", controllers.RedirectToShortUrl).Methods("GET")
+	r.HandleFunc("/{base62}", controllers.RedirectToShortUrl).Methods("GET")
 	return r
 }
